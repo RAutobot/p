@@ -13,7 +13,7 @@ import de.robv.android.xposed.XC_MethodHook
 @AliucordPlugin
 internal class Main : Plugin() {
     override fun start(context: Context) {
-        var isMultiSelecting = false
+        var isMultiSelecting = true
 
         patcher.patch(`WidgetChatListAdapterItemMessage$onConfigure$3`::class.java, "onClick", arrayOf(View::class.java), object : XC_MethodHook() {
             override fun beforeHookedMethod(param: XC_MethodHook.MethodHookParam) {

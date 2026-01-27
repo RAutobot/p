@@ -13,7 +13,7 @@ import com.google.gson.stream.JsonReader
 
 import java.io.InputStreamReader
 
-@AliucordPlugin(requiresRestart = false)
+@AliucordPlugin
 class Main : Plugin() {
     private data class Onboarding(
         val prompts: List<OnboardingPrompt>
@@ -31,12 +31,12 @@ class Main : Plugin() {
         }
     }
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         Utils.threadPool.execute {
             val data = GsonUtils.gsonRestApi.d<Onboarding>(JsonReader(InputStreamReader(Http.Request.newDiscordRNRequest("https://discord.com/api/v10/guilds/1359064958872195143/onboarding", "GET").execute().stream())), Onboarding::class.java)
             logger.warn(data.toString())
         }
     }
 
-    override fun stop(ctx: Context) = patcher.unpatchAll()
+    override fun stop(context: Context) = patcher.unpatchAll()
 }
