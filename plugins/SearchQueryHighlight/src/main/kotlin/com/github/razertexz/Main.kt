@@ -8,6 +8,7 @@ import com.aliucord.entities.Plugin
 
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemMessage
 import com.discord.widgets.chat.list.entries.MessageEntry
+import com.discord.widgets.search.results.WidgetSearchResults
 import com.discord.utilities.view.text.SimpleDraweeSpanTextView
 import com.discord.utilities.spans.BlockBackgroundSpan
 
@@ -19,7 +20,7 @@ internal class Main : Plugin() {
         patcher.patch(WidgetChatListAdapterItemMessage::class.java, "processMessageText", arrayOf(SimpleDraweeSpanTextView::class.java, MessageEntry::class.java), object : XC_MethodHook() {
             override fun afterHookedMethod(param: XC_MethodHook.MethodHookParam) {
                 val data = (param.thisObject as WidgetChatListAdapterItemMessage).adapter.data
-                logger.info(data.javaClass.name)
+                if (data !is WidgetSearchResults.Model) return
 
                 val textView = param.args[0] as SimpleDraweeSpanTextView
                 val spannable = textView.getText() as Spannable
